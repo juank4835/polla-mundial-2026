@@ -236,6 +236,43 @@
     .reglas-oro .grilla { grid-template-columns: 1fr; }
   }
 
+  .aviso-guardar {
+    margin-top: 14px;
+    background: var(--campo);
+    border-radius: var(--radio);
+    padding: 16px 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    color: #fff;
+  }
+  .aviso-guardar .marca {
+    flex: none;
+    width: 38px; height: 38px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.12);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Archivo', sans-serif;
+    font-weight: 800; font-size: 22px;
+    color: #EFC75E;
+  }
+  .aviso-guardar .texto {
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: #C4DCCB;
+  }
+  .aviso-guardar .texto b {
+    display: block;
+    font-family: 'Archivo', sans-serif;
+    font-stretch: 110%;
+    font-weight: 800;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: #fff;
+    margin-bottom: 2px;
+  }
+
   .calc-fila {
     display: flex;
     align-items: center;
@@ -457,6 +494,10 @@
           <div class="sub-cifra">+ reposici&oacute;n</div>
           <p>Es el marcador que vale. <b>No cuentan</b> la pr&oacute;rroga ni los penaltis.</p>
         </div>
+      </div>
+      <div class="aviso-guardar">
+        <span class="marca" aria-hidden="true">&#10003;</span>
+        <span class="texto"><b>No olvides darle Guardar</b>Tu pron&oacute;stico no queda registrado hasta que confirmes. Si cierras sin guardar, no cuenta.</span>
       </div>
     </section>
 
