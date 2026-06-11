@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Polla Mundial 2026 — Reglamento</title>
+<meta name="description" content="Reglamento de la polla mundialista: cómo se suman puntos, calculadora de pronósticos y reparto de premios.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --campo: #0B3D23;
+    --cesped: #1E7A43;
+    --cesped-suave: #E8F1E9;
+    --cal: #F7F8F4;
+    --blanco: #FFFFFF;
+    --tinta: #11241A;
+    --tinta-suave: #4A5C50;
+    --gris: #88958B;
+    --linea: rgba(11, 61, 35, 0.12);
+    --oro: #C99B2D;
+    --oro-fondo: #FBF3DC;
+    --oro-tinta: #6E5310;
+    --ambar-fondo: #FFF7E0;
+    --ambar-borde: #E8C660;
+    --ambar-tinta: #6E5310;
+    --rojo-suave: #FDEDEA;
+    --rojo-tinta: #9A3B2B;
+    --radio: 14px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--cal);
+    color: var(--tinta);
+    -webkit-font-smoothing: antialiased;
+    display: flex;
+    justify-content: center;
+  }
+  .pagina { width: 100%; max-width: 460px; padding-bottom: 56px; }
+  .display {
+    font-family: 'Archivo', sans-serif;
+    font-stretch: 112%;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+  }
+  .num {
+    font-family: 'Archivo', sans-serif;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .hero {
+    background: var(--campo);
+    color: var(--blanco);
+    padding: 44px 24px 104px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero svg.cancha {
+    position: absolute;
+    left: 50%;
+    bottom: -2px;
+    transform: translateX(-50%);
+    width: 460px;
+    opacity: 0.45;
+    pointer-events: none;
+  }
+  .hero .eyebrow {
+    font-family: 'Archivo', sans-serif;
+    font-stretch: 120%;
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: #9CC9AB;
+  }
+  .hero h1 {
+    font-size: clamp(30px, 8.4vw, 38px);
+    line-height: 1.06;
+    margin-top: 14px;
+    text-transform: uppercase;
+  }
+  .hero h1 .oro { color: #EFC75E; }
+  .hero p {
+    margin-top: 14px;
+    font-size: 14px;
+    line-height: 1.65;
+    color: #C4DCCB;
+    max-width: 36ch;
+  }
+  .hero p b { color: #fff; font-weight: 700; }
+
+  .contenido { padding: 0 16px; margin-top: -68px; position: relative; }
+  .tarjeta {
+    background: var(--blanco);
+    border: 1px solid var(--linea);
+    border-radius: var(--radio);
+    padding: 22px 18px;
+    box-shadow: 0 1px 2px rgba(11,61,35,0.05), 0 8px 24px -12px rgba(11,61,35,0.12);
+  }
+  .tarjeta + .tarjeta, .tarjeta + .reglas-oro, .reglas-oro + .tarjeta { margin-top: 14px; }
+  .titulo-seccion {
+    font-family: 'Archivo', sans-serif;
+    font-stretch: 110%;
+    font-weight: 800;
+    font-size: 17px;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    margin-bottom: 16px;
+  }
+
+  .seg {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background: var(--cesped-suave);
+    border-radius: 11px;
+    padding: 4px;
+    gap: 4px;
+    margin-bottom: 16px;
+  }
+  .seg button {
+    border: none;
+    background: transparent;
+    border-radius: 8px;
+    padding: 11px 8px;
+    font-family: 'Archivo', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--tinta-suave);
+    cursor: pointer;
+    transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+    touch-action: manipulation;
+  }
+  .seg button[aria-pressed="true"] {
+    background: var(--campo);
+    color: #fff;
+    box-shadow: 0 2px 6px rgba(11,61,35,0.25);
+  }
+  .seg button:focus-visible { outline: 3px solid var(--cesped); outline-offset: 2px; }
+
+  .fila-punto {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+    padding: 13px 0;
+    border-bottom: 1px solid var(--linea);
+    font-size: 14.5px;
+    line-height: 1.4;
+  }
+  .fila-punto .pts {
+    font-family: 'Archivo', sans-serif;
+    font-weight: 800;
+    font-size: 21px;
+    color: var(--campo);
+    background: var(--cesped-suave);
+    border-radius: 9px;
+    padding: 4px 12px;
+    white-space: nowrap;
+    min-width: 76px;
+    text-align: center;
+  }
+  .fila-punto .pts small { font-size: 11px; font-weight: 700; color: var(--cesped); margin-left: 2px; }
+  .fila-punto.total { border-bottom: none; }
+  .fila-punto.total span:first-child {
+    font-family: 'Archivo', sans-serif;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+  }
+  .fila-punto.total .pts { background: var(--campo); color: #fff; font-size: 23px; }
+  .fila-punto.total .pts small { color: #9CC9AB; }
+  .nota {
+    margin-top: 12px;
+    font-size: 12.5px;
+    line-height: 1.65;
+    color: var(--tinta-suave);
+  }
+  .nota b { color: var(--tinta); font-weight: 700; }
+
+  .reglas-oro { margin-top: 14px; }
+  .reglas-oro .titulo-oro {
+    font-family: 'Archivo', sans-serif;
+    font-stretch: 118%;
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--ambar-tinta);
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  .reglas-oro .grilla { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .regla-oro {
+    background: var(--ambar-fondo);
+    border: 1px solid var(--ambar-borde);
+    border-radius: var(--radio);
+    padding: 18px 14px 16px;
+    text-align: center;
+  }
+  .regla-oro .cifra-grande {
+    font-family: 'Archivo', sans-serif;
+    font-weight: 800;
+    font-size: 34px;
+    line-height: 1;
+    color: var(--ambar-tinta);
+    letter-spacing: -0.01em;
+  }
+  .regla-oro .cifra-grande small {
+    font-size: 15px;
+    font-weight: 800;
+    margin-left: 2px;
+  }
+  .regla-oro .sub-cifra {
+    font-family: 'Archivo', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #A8841F;
+    margin-top: 6px;
+  }
+  .regla-oro p {
+    margin-top: 10px;
+    font-size: 12.5px;
+    line-height: 1.55;
+    color: var(--ambar-tinta);
+  }
+  .regla-oro p b { color: #4A3608; font-weight: 700; }
+  @media (max-width: 380px) {
+    .reglas-oro .grilla { grid-template-columns: 1fr; }
+  }
+
+  .calc-fila {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 12px 0;
+  }
+  .calc-fila + .calc-fila { border-top: 1px solid var(--linea); }
+  .calc-fila .etiqueta { font-size: 13.5px; font-weight: 700; }
+  .calc-fila .etiqueta small { display: block; font-weight: 400; font-size: 11.5px; color: var(--gris); margin-top: 2px; }
+  .marcador { display: flex; align-items: center; gap: 8px; }
+  .stepper { display: flex; align-items: center; background: var(--cesped-suave); border-radius: 10px; }
+  .stepper button {
+    width: 36px; height: 42px;
+    border: none; background: transparent;
+    font-size: 19px; font-weight: 700;
+    color: var(--campo);
+    cursor: pointer;
+    border-radius: 10px;
+    transition: background 0.15s;
+    touch-action: manipulation;
+  }
+  .stepper button:active { background: rgba(11,61,35,0.12); }
+  .stepper button:focus-visible { outline: 3px solid var(--cesped); outline-offset: -3px; }
+  .stepper .cifra {
+    width: 28px;
+    text-align: center;
+    font-family: 'Archivo', sans-serif;
+    font-weight: 800;
+    font-size: 20px;
+  }
+  .marcador .guion { color: var(--gris); font-weight: 700; }
+
+  .desglose { margin-top: 14px; display: flex; flex-direction: column; gap: 7px; }
+  .acierto {
+    display: flex; align-items: center; justify-content: space-between;
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 13px;
+    background: var(--cesped-suave);
+    color: var(--campo);
+    font-weight: 500;
+  }
+  .acierto.fallo { background: var(--rojo-suave); color: var(--rojo-tinta); }
+  .acierto .pts { font-family: 'Archivo', sans-serif; font-weight: 800; font-size: 15px; }
+  .calc-total {
+    margin-top: 14px;
+    background: var(--campo);
+    border-radius: 12px;
+    padding: 16px 18px;
+    display: flex; align-items: center; justify-content: space-between;
+    color: #fff;
+  }
+  .calc-total .label {
+    font-family: 'Archivo', sans-serif;
+    font-weight: 700; font-size: 12px;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: #9CC9AB;
+  }
+  .calc-total .num { font-size: 36px; line-height: 1; }
+  .calc-total .num small { font-size: 14px; font-weight: 700; color: #9CC9AB; margin-left: 4px; }
+
+  .tarjeta.premios { background: var(--campo); border-color: var(--campo); color: #fff; }
+  .premios-head { text-align: center; margin-bottom: 18px; }
+  .premios-head .bolsa-label {
+    font-family: 'Archivo', sans-serif;
+    font-stretch: 118%;
+    font-weight: 600; font-size: 11px;
+    letter-spacing: 0.3em; text-transform: uppercase;
+    color: #9CC9AB;
+  }
+  .premios-head .bolsa {
+    font-size: 42px;
+    margin-top: 6px;
+    color: #fff;
+    letter-spacing: -0.02em;
+  }
+  .podio { display: flex; align-items: flex-end; gap: 8px; }
+  .puesto {
+    flex: 1;
+    border-radius: 12px 12px 0 0;
+    text-align: center;
+    background: rgba(255,255,255,0.10);
+    padding: 14px 6px;
+    display: flex; flex-direction: column; justify-content: flex-start; gap: 3px;
+  }
+  .puesto .pos {
+    font-family: 'Archivo', sans-serif;
+    font-weight: 900; font-size: 15px;
+    color: #9CC9AB;
+  }
+  .puesto .monto { font-size: 16px; color: #fff; }
+  .puesto .pct { font-size: 10.5px; color: #9CC9AB; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; }
+  .puesto.p2 { height: 98px; }
+  .puesto.p3 { height: 82px; }
+  .puesto.p1 {
+    flex: 1.35; height: 126px;
+    background: var(--oro-fondo);
+    padding-top: 18px;
+  }
+  .puesto.p1 .pos { color: var(--oro-tinta); font-size: 17px; }
+  .puesto.p1 .monto { font-size: 23px; color: var(--oro-tinta); }
+  .puesto.p1 .pct { color: var(--oro); }
+  .linea-podio { height: 4px; background: #EFC75E; border-radius: 2px; }
+
+  .pie {
+    margin-top: 26px;
+    padding: 0 8px;
+    text-align: center;
+  }
+  .pie h3 {
+    font-family: 'Archivo', sans-serif;
+    font-stretch: 115%;
+    font-weight: 700; font-size: 11px;
+    letter-spacing: 0.24em; text-transform: uppercase;
+    color: var(--gris);
+  }
+  .pie p { margin-top: 8px; font-size: 12px; line-height: 1.7; color: var(--tinta-suave); max-width: 40ch; margin-left: auto; margin-right: auto; }
+
+  @media (min-width: 460px) {
+    .pagina { padding-top: 28px; }
+    .hero { border-radius: 20px 20px 0 0; }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .contenido > * { animation: subir 0.55s cubic-bezier(0.2, 0.7, 0.3, 1) both; }
+    .contenido > *:nth-child(2) { animation-delay: 0.07s; }
+    .contenido > *:nth-child(3) { animation-delay: 0.14s; }
+    .contenido > *:nth-child(4) { animation-delay: 0.21s; }
+    .contenido > *:nth-child(5) { animation-delay: 0.28s; }
+    .contenido > *:nth-child(6) { animation-delay: 0.35s; }
+    @keyframes subir {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  }
+</style>
+</head>
+<body>
+<div class="pagina">
+
+  <header class="hero">
+    <svg class="cancha" viewBox="0 0 460 130" fill="none" aria-hidden="true">
+      <circle cx="230" cy="130" r="92" stroke="rgba(255,255,255,0.22)" stroke-width="2"/>
+      <circle cx="230" cy="130" r="5" fill="rgba(255,255,255,0.25)"/>
+      <line x1="0" y1="129" x2="460" y2="129" stroke="rgba(255,255,255,0.22)" stroke-width="2"/>
+    </svg>
+    <div class="eyebrow">Polla Familiar &middot; Mundial 2026</div>
+    <h1 class="display">Acierta el marcador,<br>ll&eacute;vate <span class="oro">la bolsa</span></h1>
+    <p>Pronostica el resultado exacto de cada partido. Cada acierto suma puntos y el podio se reparte <b>$1.000.000</b>.</p>
+  </header>
+
+  <main class="contenido">
+
+    <section class="tarjeta" aria-labelledby="t-puntos">
+      <h2 class="titulo-seccion" id="t-puntos">C&oacute;mo se suman puntos</h2>
+      <div class="seg" role="group" aria-label="Fase del torneo">
+        <button type="button" id="seg-grupos" aria-pressed="true" onclick="setFase(1)">Fase de grupos</button>
+        <button type="button" id="seg-elim" aria-pressed="false" onclick="setFase(2)">Eliminatorias</button>
+      </div>
+      <div class="fila-punto"><span>Acertar el resultado<br>(ganador o empate)</span><span class="pts num" data-base="5">5<small>PTS</small></span></div>
+      <div class="fila-punto"><span>Acertar los goles del primer equipo</span><span class="pts num" data-base="2">2<small>PTS</small></span></div>
+      <div class="fila-punto"><span>Acertar los goles del segundo equipo</span><span class="pts num" data-base="2">2<small>PTS</small></span></div>
+      <div class="fila-punto"><span>Acertar la diferencia de goles</span><span class="pts num" data-base="1">1<small>PT</small></span></div>
+      <div class="fila-punto total"><span>M&aacute;ximo por partido</span><span class="pts num" data-base="10">10<small>PTS</small></span></div>
+      <p class="nota">El primer y segundo equipo siguen el orden del marcador: en <b>BRA 2 &ndash; 1 ALE</b>, Brasil es el primero. En eliminatorias cada acierto vale el doble.</p>
+    </section>
+
+    <section class="tarjeta" aria-labelledby="t-calc">
+      <h2 class="titulo-seccion" id="t-calc">Prueba tu pron&oacute;stico</h2>
+      <div class="calc-fila">
+        <div class="etiqueta">Tu pron&oacute;stico<small>Lo que crees que pasar&aacute;</small></div>
+        <div class="marcador">
+          <div class="stepper">
+            <button type="button" onclick="mod('pa',-1)" aria-label="Restar gol al primer equipo del pron&oacute;stico">&minus;</button>
+            <span class="cifra num" id="pa">1</span>
+            <button type="button" onclick="mod('pa',1)" aria-label="Sumar gol al primer equipo del pron&oacute;stico">+</button>
+          </div>
+          <span class="guion">&ndash;</span>
+          <div class="stepper">
+            <button type="button" onclick="mod('pb',-1)" aria-label="Restar gol al segundo equipo del pron&oacute;stico">&minus;</button>
+            <span class="cifra num" id="pb">0</span>
+            <button type="button" onclick="mod('pb',1)" aria-label="Sumar gol al segundo equipo del pron&oacute;stico">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="calc-fila">
+        <div class="etiqueta">Resultado final<small>C&oacute;mo termin&oacute; el partido</small></div>
+        <div class="marcador">
+          <div class="stepper">
+            <button type="button" onclick="mod('ra',-1)" aria-label="Restar gol al primer equipo del resultado">&minus;</button>
+            <span class="cifra num" id="ra">2</span>
+            <button type="button" onclick="mod('ra',1)" aria-label="Sumar gol al primer equipo del resultado">+</button>
+          </div>
+          <span class="guion">&ndash;</span>
+          <div class="stepper">
+            <button type="button" onclick="mod('rb',-1)" aria-label="Restar gol al segundo equipo del resultado">&minus;</button>
+            <span class="cifra num" id="rb">0</span>
+            <button type="button" onclick="mod('rb',1)" aria-label="Sumar gol al segundo equipo del resultado">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="desglose" id="desglose" aria-live="polite"></div>
+      <div class="calc-total">
+        <span class="label" id="fase-label">Fase de grupos</span>
+        <span class="num" id="total">7<small>pts</small></span>
+      </div>
+    </section>
+
+    <section class="reglas-oro" aria-label="Reglas de oro">
+      <div class="titulo-oro">Reglas de oro</div>
+      <div class="grilla">
+        <div class="regla-oro">
+          <div class="cifra-grande num">10<small>MIN</small></div>
+          <div class="sub-cifra">antes del partido</div>
+          <p>Es el plazo m&aacute;ximo para registrar o <b>cambiar tu pron&oacute;stico</b>.</p>
+        </div>
+        <div class="regla-oro">
+          <div class="cifra-grande num">90&prime;</div>
+          <div class="sub-cifra">+ reposici&oacute;n</div>
+          <p>Es el marcador que vale. <b>No cuentan</b> la pr&oacute;rroga ni los penaltis.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="tarjeta premios" aria-labelledby="t-premios">
+      <div class="premios-head">
+        <div class="bolsa-label" id="t-premios">Bolsa total</div>
+        <div class="bolsa num">$1.000.000</div>
+      </div>
+      <div class="podio">
+        <div class="puesto p2">
+          <span class="pos">2.&ordm;</span>
+          <span class="monto num">$300.000</span>
+          <span class="pct">30%</span>
+        </div>
+        <div class="puesto p1">
+          <span class="pos">1.&ordm;</span>
+          <span class="monto num">$600.000</span>
+          <span class="pct">60% de la bolsa</span>
+        </div>
+        <div class="puesto p3">
+          <span class="pos">3.&ordm;</span>
+          <span class="monto num">$100.000</span>
+          <span class="pct">10%</span>
+        </div>
+      </div>
+      <div class="linea-podio"></div>
+    </section>
+
+    <footer class="pie">
+      <h3>Desempate</h3>
+      <p>Si hay empate en puntos, gana quien tenga m&aacute;s partidos con puntaje pleno. Si persiste, se comparan los partidos con puntajes parciales m&aacute;s altos (7, 6 y 5 puntos).</p>
+    </footer>
+
+  </main>
+</div>
+
+<script>
+  var estado = { pa: 1, pb: 0, ra: 2, rb: 0, fase: 1 };
+
+  function setFase(m) {
+    estado.fase = m;
+    document.getElementById('seg-grupos').setAttribute('aria-pressed', m === 1 ? 'true' : 'false');
+    document.getElementById('seg-elim').setAttribute('aria-pressed', m === 2 ? 'true' : 'false');
+    document.getElementById('fase-label').textContent = m === 1 ? 'Fase de grupos' : 'Eliminatorias';
+    var celdas = document.querySelectorAll('.fila-punto .pts');
+    for (var i = 0; i < celdas.length; i++) {
+      var v = parseInt(celdas[i].getAttribute('data-base'), 10) * m;
+      celdas[i].innerHTML = v + '<small>' + (v === 1 ? 'PT' : 'PTS') + '</small>';
+    }
+    calcular();
+  }
+
+  function mod(id, delta) {
+    var v = Math.min(9, Math.max(0, estado[id] + delta));
+    estado[id] = v;
+    document.getElementById(id).textContent = v;
+    calcular();
+  }
+
+  function fila(ok, texto, pts) {
+    return '<div class="acierto' + (ok ? '' : ' fallo') + '">' +
+      '<span>' + (ok ? '&#10003; ' : '&#10007; ') + texto + '</span>' +
+      '<span class="pts num">' + (ok ? '+' + pts : '0') + '</span></div>';
+  }
+
+  function calcular() {
+    var m = estado.fase;
+    var sp = Math.sign(estado.pa - estado.pb);
+    var sr = Math.sign(estado.ra - estado.rb);
+    var aciertos = [
+      { ok: sp === sr, texto: 'Resultado (ganador o empate)', pts: 5 * m },
+      { ok: estado.pa === estado.ra, texto: 'Goles del primer equipo', pts: 2 * m },
+      { ok: estado.pb === estado.rb, texto: 'Goles del segundo equipo', pts: 2 * m },
+      { ok: (estado.pa - estado.pb) === (estado.ra - estado.rb), texto: 'Diferencia de goles', pts: 1 * m }
+    ];
+    var html = '';
+    var total = 0;
+    for (var i = 0; i < aciertos.length; i++) {
+      var a = aciertos[i];
+      if (a.ok) total += a.pts;
+      html += fila(a.ok, a.texto, a.pts);
+    }
+    document.getElementById('desglose').innerHTML = html;
+    document.getElementById('total').innerHTML = total + '<small>pts</small>';
+  }
+
+  setFase(1);
+</script>
+</body>
+</html>
